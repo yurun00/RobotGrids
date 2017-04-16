@@ -199,9 +199,11 @@ $(window).on('load', function() {
     grd.render();
     rbt.render();
     // Show the robot movement defined by key seqence with delay
-    for (var k = 0;k < keySeq.length;k++) {
+	var k = 0;
+    for (;k < keySeq.length;k++) {
       setTimeout(robotOp.bind(this, keySeq[k]), 500*(k+1));
     }
+	setTimeout(function () {alert("Finished!");}, 500*(k+1));
   });
   
   function robotOp(k) {
