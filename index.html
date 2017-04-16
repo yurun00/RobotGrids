@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+  <head> 
+    <style>  
+      .outputDiv {
+        height: 100px;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .hintSpan { 
+        background-color: lightskyblue;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        font: bold 20px arial;
+        line-height: 60px;
+        width: 600px;
+        margin: 10px;
+      }
+      .choseForm {
+        height: 160px;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .mdButton {
+        border: 0px;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        font: bold 20px arial;
+        line-height: 40px;
+        width: 120px;
+        margin: 10px;
+      }
+    </style>
+    <script type="text/javascript" src="scripts/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="scripts/choseModel.js"></script>
+  </head>
+  <body>
+    <div id = "mainDiv">
+      <canvas id = "mainCanvas"></canvas>
+    </div>
+    <div class = "outputDiv">
+      <span class = "hintSpan">Press space to move, 'L' to turn left, 'R' to turn right</span>
+    </div>
+    <form class = "choseForm">
+      <input type="button" value="Mode 1" id = "mode1Button" class = "modeButton"/><br>
+      <input type="button" value="Mode 2" id = "mode2Button" class = "modeButton"/>
+    </form>
+  </body>
+</html>

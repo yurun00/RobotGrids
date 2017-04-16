@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+  <head> 
+    <style>  
+      .inputDiv {
+        background-color: lightskyblue;
+        display: table;
+        text-align: center;
+      }
+      .outputDiv {
+        background-color: lightskyblue;
+        display: table;
+        text-align: center;
+      }
+      .hintSpan { 
+        display: table-cell;
+        background-color: cornflowerblue;
+        padding: 10px;
+        height: 40px;
+        width: 360px;
+        text-align: left;
+        vertical-align: middle;
+        margin-left: 40px;
+        font: italic 20px arial;
+      }
+      .smallHintSpan { 
+        display: table-cell;
+        color: lightcoral;
+        margin: 10px;
+        height: 40px;
+        width: 60px;
+        text-align: center;
+        vertical-align: middle;
+        font: italic 20px arial;
+      }
+      .sepaSpan {
+        display: table-cell; 
+        width: 20px;
+        height: 40px;
+      }
+      .keyInput {
+        border: 0px;
+        margin: 14px;
+        width: 400px;
+        height: 30px;
+        padding-left: 20px;
+        font: Comic sans MS;
+      }
+      .finButton {
+        border: 0px;
+        margin: 10px;
+        width: 40px;
+        height: 40px;
+      }
+      .numInput {
+        border: 0px;
+        margin: 14px;
+        width: 40px;
+        height: 30px;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .charInput {
+        border: 0px;
+        margin: 10px;
+        width: 40px;
+        height: 30px;
+        text-align: center;
+        vertical-align: middle;
+      }
+    </style>
+    <script type="text/javascript" src="scripts/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="scripts/game1.js"></script>
+  </head>
+  <body>
+    <div id = "mainDiv">
+      <canvas id = "mainCanvas"></canvas>
+    </div><br>
+    <form id = "mainForm">
+      <div class = "inputDiv">
+        <span class = "hintSpan">Input initial position</span>
+        <span class = "smallHintSpan">Row</span>
+        <input class = "numInput" name = "startRow" type = "number" min = "1" max = "8">
+        <span class = "smallHintSpan">Col</span>
+        <input class = "numInput" name = "startCol" type = "number" min = "1" max = "8">
+        <span class = "smallHintSpan">Face</span>
+        <input class = "charInput" name = "face" type = "text" maxlength = "1">
+      </div><br>
+      <div class = "inputDiv">
+        <span class = "hintSpan">Input key sequence, comma separate</span>
+        <span class = "sepaSpan"></span>
+        <input id = "keySeq" class = "keyInput" type = "text">
+        <span class = "sepaSpan"></span>
+        <input id = "goButton" class = "finButton" type = "button" value = "Go">
+      </div><br>
+      <div class = "outputDiv">
+        <span class = "hintSpan">Output location and direction</span>
+        <span class = "smallHintSpan">Now</span>
+        <span class = "smallHintSpan">Row:</span>
+        <span id = "nowRow" class = "smallHintSpan">-1</span>
+        <span class = "smallHintSpan">Col:</span>
+        <span id = "nowCol" class = "smallHintSpan">-1</span>
+        <span class = "smallHintSpan">Face:</span>
+        <span id = "nowFace" class = "smallHintSpan">East</span>
+      </div>
+    </form>
+  </body>
+</html>
