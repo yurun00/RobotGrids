@@ -2,13 +2,45 @@
 <html>
   <head> 
     <style>  
-      .inputDiv {
-        background-color: lightskyblue;
-        display: table;
-        text-align: center;
+      body {background-color: #e8e8e8}
+      #mainCanvas {
+        border: 5px solid black;
+        border-radius: 10px;
       }
-      .outputDiv {
+      #mainDiv {
+        margin: auto;
+        width: 600px;
+        box-shadow: 0 0 20px #999;
+        border-radius: 10px;
+        text-align: left;
+        vertical-align: middle;
+      }
+      #canvasDiv {
+        margin: auto; 
+        width: 600px; 
+        height: 400px;
+        background-color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      #underCanvasDiv {
         background-color: lightskyblue;
+        width: 600px;
+        margin: auto; 
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+      #backDiv {
+        text-align: center;
+        vertical-align: middle;
+      }
+      .faceDiv {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+        font: bold 20px arial;
+      }
+      .ioDiv {
         display: table;
         text-align: center;
       }
@@ -21,17 +53,37 @@
         text-align: left;
         vertical-align: middle;
         margin-left: 40px;
-        font: italic 20px arial;
+        font: bold 20px arial;
+        box-shadow: 0 0 20px #999;
+        border-radius: 10px;
+      }
+      .cHintSpan { 
+        display: table-cell;
+        background-color: cornflowerblue;
+        padding: 10px;
+        height: 40px;
+        width: 150px;
+        text-align: left;
+        vertical-align: middle;
+        margin-left: 40px;
+        font: bold 20px arial;
+        border-bottom-left-radius: 10px;
+      }
+      .inputDiv { 
+        background-color: lightskyblue;
+        display: table;
+        box-shadow: 0 0 20px #999;
+        padding-right: 20px;
+        border-radius: 10px;
       }
       .smallHintSpan { 
         display: table-cell;
-        color: lightcoral;
         margin: 10px;
-        height: 40px;
+        height: 60px;
         width: 60px;
         text-align: center;
         vertical-align: middle;
-        font: italic 20px arial;
+        font: 20px arial;
       }
       .sepaSpan {
         display: table-cell; 
@@ -39,34 +91,59 @@
         height: 40px;
       }
       .keyInput {
-        border: 0px;
-        margin: 14px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         width: 400px;
-        height: 30px;
+        height: 40px;
         padding-left: 20px;
         font: Comic sans MS;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
       }
       .finButton {
-        border: 0px;
-        margin: 10px;
+        background-color: #666666;
         width: 40px;
         height: 40px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+      .backButton {
+        display: block;
+        background-color: lightcoral;
+        margin: 0 auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+      .finButton:hover {
+        width: 44px;
+        height: 44px;
+        background-color: #aaaaaa; 
+      }
+      .backButton:hover {
+        width: 44px;
+        height: 44px;
+        background-color: coral; 
       }
       .numInput {
-        border: 0px;
         margin: 14px;
         width: 40px;
         height: 30px;
         text-align: center;
         vertical-align: middle;
+        border-radius: 5px;
       }
-      .charInput {
-        border: 0px;
-        margin: 10px;
-        width: 40px;
-        height: 30px;
-        text-align: center;
-        vertical-align: middle;
+      .faceDiv {
+        color: #555555;
+      }
+      .faceDiv label {
+        -webkit-transition: all 0.25s linear;
+      }
+      .faceRadio:hover+label {
+        color: #AAAAAA;
+      }
+      input[type=radio]:checked+label{
+        color: #0D9999;
       }
     </style>
     <script type="text/javascript" src="scripts/jquery-3.2.1.js"></script>
@@ -74,34 +151,51 @@
   </head>
   <body>
     <div id = "mainDiv">
-      <canvas id = "mainCanvas"></canvas>
-    </div><br>
-    <form id = "mainForm">
-      <div class = "inputDiv">
-        <span class = "hintSpan">Input initial position</span>
-        <span class = "smallHintSpan">Row</span>
-        <input class = "numInput" name = "startRow" type = "number" min = "1" max = "8">
-        <span class = "smallHintSpan">Col</span>
-        <input class = "numInput" name = "startCol" type = "number" min = "1" max = "8">
-        <span class = "smallHintSpan">Face</span>
-        <input class = "charInput" name = "face" type = "text" maxlength = "1">
-      </div><br>
-      <div class = "inputDiv">
-        <span class = "hintSpan">Input key sequence, comma separate</span>
+      <div id = "canvasDiv">
+        <canvas id = "mainCanvas"></canvas>
+      </div>
+      <div id = "underCanvasDiv">
+        <span class = "cHintSpan">Current State</span>
         <span class = "sepaSpan"></span>
-        <input id = "keySeq" class = "keyInput" type = "text">
-        <span class = "sepaSpan"></span>
-        <input id = "goButton" class = "finButton" type = "button" value = "Go">
-      </div><br>
-      <div class = "outputDiv">
-        <span class = "hintSpan">Output location and direction</span>
-        <span class = "smallHintSpan">Now</span>
         <span class = "smallHintSpan">Row:</span>
         <span id = "nowRow" class = "smallHintSpan">-1</span>
         <span class = "smallHintSpan">Col:</span>
         <span id = "nowCol" class = "smallHintSpan">-1</span>
         <span class = "smallHintSpan">Face:</span>
         <span id = "nowFace" class = "smallHintSpan">East</span>
+      </div>
+    </div><br>
+    <form id = "mainForm">
+      <div class = "ioDiv">
+        <span class = "hintSpan">Input initial position</span>
+        <span class = "sepaSpan"></span>
+        <div class = "inputDiv">
+          <span class = "smallHintSpan">Row</span>
+          <input class = "numInput" name = "startRow" type = "number" value = "1" min = "1" max = "8">
+          <span class = "smallHintSpan">Col</span>
+          <input class = "numInput" name = "startCol" type = "number" value = "1" min = "1" max = "8">
+          <span class = "smallHintSpan">Face</span>
+          <span class = "sepaSpan"></span>
+          <div class = "faceDiv">
+            <input type="radio" id="faceW" name="face" class = "faceRadio" value = "W">
+            <label for="faceW">W</label>
+            <input type="radio" id="faceE" name="face" class = "faceRadio" value = "E" checked>
+            <label for="faceE">E</label>
+            <input type="radio" id="faceN" name="face" class = "faceRadio" value = "N">
+            <label for="faceN">N</label>
+            <input type="radio" id="faceS" name="face" class = "faceRadio" value = "S">
+            <label for="faceS">S</label>
+          </div>
+        </div>
+      </div><br>
+      <div class = "ioDiv">
+        <span class = "hintSpan">Input key sequence, comma separate</span>
+        <span class = "sepaSpan"></span>
+        <input id = "keySeq" class = "keyInput" type = "text">
+        <input id = "goButton" class = "finButton" type = "button" value = "Go">
+      </div><br>
+      <div class = "backDiv">
+        <input id = "backButton" class = "backButton" type="button" value="Back"/>
       </div>
     </form>
   </body>

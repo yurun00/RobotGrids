@@ -115,15 +115,14 @@ function grid() {
 }
 
 $(window).on('load', function() {
-  dv = $("#mainDiv")[0];
-  dv.setAttribute('style', "margin: auto; width: 600px; height: 400px;");
+  dv = $("#canvasDiv")[0];
   
   // The direction symbol image
   var dirImg = new Image();
   dirImg.src = "images/directions.png";
   // Add the direction symbol image to the main div
   dv.appendChild(dirImg);
-  dirImg.setAttribute('style', "position: relative; top: -80px; left: 80px");
+  dirImg.setAttribute('style', "position: relative; top: -80px; left: 100px");
   
   // Create a reference for the canvas
   cvs = $("#mainCanvas")[0];
@@ -189,11 +188,11 @@ $(window).on('load', function() {
       rbt.y = 1;
     else if(rbt.y > 8)
       rbt.y = 8;
-    // The situation where face direction is not one of 'W', 'E', 'N', 'S'
-    if (document.getElementsByName('face')[0].value.toUpperCase() in ch2arr)
-      rbt.direction = ch2arr[document.getElementsByName('face')[0].value.toUpperCase()];
-    else 
-      rbt.direction = [0, 1];
+    // Get the face direction in one of ['W', 'E', 'N', 'S']
+    for (var i = 0;i < 4;i++) {
+      if (document.getElementsByName('face')[i].checked)
+        rbt.direction = ch2arr[document.getElementsByName('face')[i].value];
+    }
     // Choose robot image of the face direction
     rbt.robotPos = 3 + rbt.direction[0] - 3 * rbt.direction[1];
     grd.render();
@@ -218,5 +217,10 @@ $(window).on('load', function() {
     grd.render();
     rbt.render();
   }
+  
+  // If press the 'Back' button, load chose model page
+  document.getElementById("backButton").addEventListener('click', function () {
+    window.location.href = "index.html";
+  });
 });
 

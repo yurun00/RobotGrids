@@ -119,7 +119,7 @@ $(window).on('load', function() {
   dirImg.src = "images/directions.png";
   // Add the direction symbol image to the main div
   dv.appendChild(dirImg);
-  dirImg.setAttribute('style', "position: relative; top: -80px; left: 80px");
+  dirImg.setAttribute('style', "position: relative; top: -80px; left: 100px");
   
   // Create a reference for the canvas
   cvs = $("#mainCanvas")[0];
@@ -174,6 +174,29 @@ $(window).on('load', function() {
   // If press the 'Model 2' button, load game model 2
   document.getElementById("mode2Button").addEventListener('click', function () {
     window.location.href = "mode2.html";
+  });
+  
+  // Add mouse event when mouse on the buttons
+  document.getElementById("mode1Button").addEventListener('mouseenter', function () {
+    document.getElementById("mode1Button").style.backgroundColor = "coral";
+    document.getElementById("mode1Button").style.width = "130px";
+    document.getElementById("mode1Button").style.height = "50px";
+  });
+  document.getElementById("mode1Button").addEventListener('mouseleave', function () {
+    document.getElementById("mode1Button").style.backgroundColor = "lightcoral";
+    document.getElementById("mode1Button").style.width = "120px";
+    document.getElementById("mode1Button").style.height = "40px";
+  });
+  
+  document.getElementById("mode2Button").addEventListener('mouseenter', function () {
+    document.getElementById("mode2Button").style.backgroundColor = "coral";
+    document.getElementById("mode2Button").style.width = "130px";
+    document.getElementById("mode2Button").style.height = "50px";
+  });
+  document.getElementById("mode2Button").addEventListener('mouseleave', function () {
+    document.getElementById("mode2Button").style.backgroundColor = "lightcoral";
+    document.getElementById("mode2Button").style.width = "120px";
+    document.getElementById("mode2Button").style.height = "40px";
   });
 });
 

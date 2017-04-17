@@ -2,6 +2,16 @@
 <html>
   <head> 
     <style>  
+      body {background-color: #e8e8e8}
+      #mainCanvas {
+        border: 5px solid black;
+        border-radius: 10px;
+      }
+      #mainDiv {
+        background-color: white;
+        box-shadow: 0 0 20px #999;
+        border-radius: 10px;
+      }
       .outputDiv {
         height: 100px;
         text-align: center;
@@ -16,6 +26,8 @@
         line-height: 60px;
         width: 600px;
         margin: 10px;
+        box-shadow: 0 0 20px #999;
+        border-radius: 10px;
       }
       .choseForm {
         height: 160px;
@@ -23,7 +35,7 @@
         vertical-align: middle;
       }
       .modeButton {
-        border: 0px;
+        background-color: lightcoral;
         display: inline-block;
         text-align: center;
         vertical-align: middle;
@@ -31,6 +43,8 @@
         line-height: 40px;
         width: 120px;
         margin: 10px;
+        box-shadow: 0 0 20px #999;
+        border-radius: 10px;
       }
     </style>
     <script type="text/javascript" src="scripts/jquery-3.2.1.js"></script>
@@ -39,7 +53,7 @@
   <body>
     <div id = "mainDiv">
       <canvas id = "mainCanvas"></canvas>
-    </div>
+    </div><br>
     <div class = "outputDiv">
       <span class = "hintSpan">Press space to move, 'L' to turn left, 'R' to turn right</span>
     </div>
