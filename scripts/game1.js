@@ -156,47 +156,38 @@ $(window).on('load', function() {
   rbt.image.onload = function() {
     rbt.render();
   };
-  
-  // Still trying to figure out how to add event only on the div element
-  //$(document).on
-  document.getElementById('mainDiv').addEventListener('keypress', function (event) {
-      // If press space or 'l' or 'r'
-      if(event.keyCode == 32 || event.keyCode == 108 || event.keyCode == 114) {
-        event.preventDefault();    
-        rbt.keybd = event.keyCode;
-        rbt.update();
-        grd.render();
-        rbt.render();
-      }
-    }
-  );
 
   // If press the 'Go' button, move the robot following the sequence
   document.getElementById("goButton").addEventListener('click', function () {
+    // Get the start position
+    var startRow = parseInt(document.getElementsByName('startRow')[0].value);
+    var startCol = parseInt(document.getElementsByName('startCol')[0].value);
+    // Get the start face direction
+    var startF = "";
+    for (var i = 0;i < 4;i++) {
+      if (document.getElementsByName('face')[i].checked)
+        startF = document.getElementsByName('face')[i].value;
+    }
+    
+    // The situation where the start position is out of range
+    if(startRow < 1 || startRow > 8 || startCol < 1 || startCol > 8) {
+      alert("Initial state invalid!");
+      return ;
+    }
+    
     // Get the key sequence
     keySeq = document.getElementById("keySeq").value;
     keySeq = keySeq.split(',');
     // Get the start position
-    rbt.x = parseInt(document.getElementsByName('startCol')[0].value);
-    rbt.y = parseInt(document.getElementsByName('startRow')[0].value);
-    // The situation where the start position is out of range
-    if(rbt.x < 1) 
-      rbt.x = 1;
-    else if(rbt.x > 8)
-      rbt.x = 8;
-    if(rbt.y < 1) 
-      rbt.y = 1;
-    else if(rbt.y > 8)
-      rbt.y = 8;
+    rbt.x = startRow;
+    rbt.y = startCol;
     // Get the face direction in one of ['W', 'E', 'N', 'S']
-    for (var i = 0;i < 4;i++) {
-      if (document.getElementsByName('face')[i].checked)
-        rbt.direction = ch2arr[document.getElementsByName('face')[i].value];
-    }
+    rbt.direction = ch2arr[startF].slice();
     // Choose robot image of the face direction
     rbt.robotPos = 3 + rbt.direction[0] - 3 * rbt.direction[1];
     grd.render();
     rbt.render();
+    
     // Show the robot movement defined by key seqence with delay
 	var k = 0;
     for (;k < keySeq.length;k++) {

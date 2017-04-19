@@ -11,6 +11,9 @@ var keySeq = []; // Keyboard input sequence
 var ch2arr = {'W': [0,-1], 'S': [-1, 0], 'E': [0, 1], 'N':[1, 0]};
 // Key is calculated by (dir[0] + 2 * dir[1] + 2)
 var arr2ch = {0: 'W', 1: 'S', 4: 'E', 3: 'N'};
+var startRow = 0;
+var startCol = 0;
+var startF = "";
 
 // Robot object
 function robot() {
@@ -114,6 +117,69 @@ function grid() {
   }
 }
 
+// Given initial state and target state, return all possible paths
+function calcPath(x0, y0, f0, x1, y1, f1, n) {
+  // x means row number, y means column number, different from the robot though...
+  x0 -= 1;
+  y0 -= 1;
+  x1 -= 1;
+  y1 -= 1;
+  var dp = new Array(n+1);
+  for (var i = 0; i < n+1; i++) {
+    dp[i] = new Array(4);
+    for (var f = 0; f < 4; f++) {
+      dp[i][f] = new Array(8);
+      for (var x = 0; x < 8; x++) {
+        dp[i][f][x] = new Array(8);
+        for (var y = 0; y < 8;y++) {
+          dp[i][f][x][y] = false;
+        }
+      }
+    }
+  }
+  dp[0][f0][x0][y0] = true;
+  for (var i = 1; i < n+1; i++) {
+    for (var f = 0; f < 4; f++) {
+      for (var x = 0; x < 8; x++) {
+        for (var y = 0; y < 8;y++) {
+          if (dp[i-1][(f+3)%4][x][y] || dp[i-1][(f+1)%4][x][y])
+              dp[i][f][x][y] = true;
+          var d1 = [x+1, x, x-1, x];
+          var d2 = [y, y+1, y, y-1];
+          if (d1[f] >= 0 && d1[f] <= 7 && d2[f] >= 0 && d2[f] <= 7 && dp[i-1][f][d1[f]][d2[f]])
+              dp[i][f][x][y] = true;
+        }
+      }
+    }
+  }
+  var res = [];
+  if (x0 == x1 && y0 == y1 && f0 == f1)
+    res.push("");
+  for (var i = 1; i < n+1; i++) {
+    var cur = "";
+    dfs(res, dp, x1, y1, f1, i, cur);
+  }
+  return res;
+}
+
+function dfs(res, dp, x, y, f, n, cur) {
+  if (n == 0) {
+      res.push(cur);
+      return;
+  }
+  
+  if (dp[n-1][(f+3)%4][x][y])
+      dfs(res, dp, x, y, (f+3)%4, n-1, 'L'+cur);
+  if (dp[n-1][(f+1)%4][x][y])
+      dfs(res, dp, x, y, (f+1)%4, n-1, 'R'+cur);
+  var d1 = [x+1, x, x-1, x];
+  var d2 = [y, y+1, y, y-1];
+  if (d1[f] >= 0 && d1[f] <= 7 && d2[f] >= 0 && d2[f] <= 7 && dp[n - 1][f][d1[f]][d2[f]])
+      dfs(res, dp, d1[f], d2[f], f, n-1, 'M'+cur);
+}
+
+
+  
 $(window).on('load', function() {
   dv = $("#canvasDiv")[0];
   
@@ -156,53 +222,82 @@ $(window).on('load', function() {
   rbt.image.onload = function() {
     rbt.render();
   };
-  
-  // Still trying to figure out how to add event only on the div element
-  //$(document).on
-  document.getElementById('mainDiv').addEventListener('keypress', function (event) {
-      // If press space or 'l' or 'r'
-      if(event.keyCode == 32 || event.keyCode == 108 || event.keyCode == 114) {
-        event.preventDefault();    
-        rbt.keybd = event.keyCode;
-        rbt.update();
-        grd.render();
-        rbt.render();
-      }
-    }
-  );
 
   // If press the 'Go' button, move the robot following the sequence
   document.getElementById("goButton").addEventListener('click', function () {
-    // Get the key sequence
-    keySeq = document.getElementById("keySeq").value;
-    keySeq = keySeq.split(',');
     // Get the start position
-    rbt.x = parseInt(document.getElementsByName('startCol')[0].value);
-    rbt.y = parseInt(document.getElementsByName('startRow')[0].value);
-    // The situation where the start position is out of range
-    if(rbt.x < 1) 
-      rbt.x = 1;
-    else if(rbt.x > 8)
-      rbt.x = 8;
-    if(rbt.y < 1) 
-      rbt.y = 1;
-    else if(rbt.y > 8)
-      rbt.y = 8;
-    // Get the face direction in one of ['W', 'E', 'N', 'S']
+    startRow = parseInt(document.getElementsByName('startRow')[0].value);
+    startCol = parseInt(document.getElementsByName('startCol')[0].value);
+    // Get the start face direction
+    startF = "";
     for (var i = 0;i < 4;i++) {
       if (document.getElementsByName('face')[i].checked)
-        rbt.direction = ch2arr[document.getElementsByName('face')[i].value];
+        startF = document.getElementsByName('face')[i].value;
     }
+    // Get the maximum actinos
+    var maxAct = parseInt(document.getElementsByName('maxAct')[0].value);
+    
+    // The situation where the start position is out of range
+    if(startRow < 1 || startRow > 8 || startCol < 1 || startCol > 8) {
+      alert("Initial state invalid!");
+      return ;
+    }
+    
+    // Get target state information
+    var targetRow = parseInt(document.getElementsByName('targetRow')[0].value);
+    var targetCol = parseInt(document.getElementsByName('targetCol')[0].value);
+    // Get the start face direction
+    var targetF = "";
+    for (var i = 0;i < 4;i++) {
+      if (document.getElementsByName('tFace')[i].checked)
+        targetF = document.getElementsByName('tFace')[i].value;
+    }
+    
+    // Initialize the robot
+    rbt.x = startCol;
+    rbt.y = startRow;
+    rbt.direction = ch2arr[startF].slice();
     // Choose robot image of the face direction
     rbt.robotPos = 3 + rbt.direction[0] - 3 * rbt.direction[1];
     grd.render();
     rbt.render();
-    // Show the robot movement defined by key seqence with delay
-	var k = 0;
-    for (;k < keySeq.length;k++) {
-      setTimeout(robotOp.bind(this, keySeq[k]), 500*(k+1));
+    // Direction value for calculate the paths
+    var dirToVal = {'W': 0, 'S': 1, 'E': 2, 'N': 3};
+    // Get the results of all possible paths
+    paths = calcPath(startRow, startCol, dirToVal[startF], targetRow, targetCol, dirToVal[targetF], maxAct);
+    // Before adding paths to 'select' tag, clear the tag
+    var sel = document.getElementById('opSeq');
+    sel.options.length = 0;
+    // Add default option for the sake of 'change' event
+    var option = document.createElement("option");
+    option.text = 'default';
+    sel.add(option);
+    // Add all paths to 'select' tag
+    for (var i = 0;i < paths.length;i++) {
+      var option = document.createElement("option");
+      option.text = paths[i];
+      sel.add(option);
     }
-	setTimeout(function () {alert("Finished!");}, 500*(k+1));
+  });
+  
+  // Add 'change' event to 'select' tag, trigger the event will move the robot
+  document.getElementById('opSeq').addEventListener('change', function () {
+    // Start from start state
+    rbt.x = startCol;
+    rbt.y = startRow;
+    rbt.direction = ch2arr[startF].slice();
+    rbt.robotPos = 3 + rbt.direction[0] - 3 * rbt.direction[1];
+    grd.render();
+    rbt.render();
+
+    // Show the robot movement defined by charactor seqence with delay
+    var opSeq = this.value;
+    if(opSeq == 'default')
+      return ;
+    for (var k = 0;k < opSeq.length;k++) {
+      setTimeout(robotOp.bind(this, opSeq[k]), 500*(k+1));
+    }
+    setTimeout(function () {alert("Finished!");}, 500*(k+1));
   });
   
   function robotOp(k) {

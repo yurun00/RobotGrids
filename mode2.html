@@ -85,12 +85,21 @@
         vertical-align: middle;
         font: 20px arial;
       }
+      .midHintSpan { 
+        display: table-cell;
+        margin: 10px;
+        height: 60px;
+        width: 100px;
+        text-align: center;
+        vertical-align: middle;
+        font: 20px arial;
+      }
       .sepaSpan {
         display: table-cell; 
         width: 20px;
         height: 40px;
       }
-      .keyInput {
+      .opOutput {
         margin-top: 10px;
         margin-bottom: 10px;
         width: 400px;
@@ -147,7 +156,7 @@
       }
     </style>
     <script type="text/javascript" src="scripts/jquery-3.2.1.js"></script>
-    <script type="text/javascript" src="scripts/game1.js"></script>
+    <script type="text/javascript" src="scripts/game2.js"></script>
   </head>
   <body>
     <div id = "mainDiv">
@@ -167,31 +176,57 @@
     </div><br>
     <form id = "mainForm">
       <div class = "ioDiv">
-        <span class = "hintSpan">Input initial position</span>
+        <span class = "hintSpan">Input initial state</span>
         <span class = "sepaSpan"></span>
         <div class = "inputDiv">
           <span class = "smallHintSpan">Row</span>
-          <input class = "numInput" name = "startRow" type = "number" value = "1" min = "1" max = "8">
+          <input class = "numInput" name = "startRow" type = "number" value = "2" min = "1" max = "8">
           <span class = "smallHintSpan">Col</span>
-          <input class = "numInput" name = "startCol" type = "number" value = "1" min = "1" max = "8">
+          <input class = "numInput" name = "startCol" type = "number" value = "3" min = "1" max = "8">
           <span class = "smallHintSpan">Face</span>
           <span class = "sepaSpan"></span>
           <div class = "faceDiv">
             <input type="radio" id="faceW" name="face" class = "faceRadio" value = "W">
             <label for="faceW">W</label>
-            <input type="radio" id="faceE" name="face" class = "faceRadio" value = "E" checked>
+            <input type="radio" id="faceE" name="face" class = "faceRadio" value = "E">
             <label for="faceE">E</label>
-            <input type="radio" id="faceN" name="face" class = "faceRadio" value = "N">
+            <input type="radio" id="faceN" name="face" class = "faceRadio" value = "N" checked>
             <label for="faceN">N</label>
             <input type="radio" id="faceS" name="face" class = "faceRadio" value = "S">
             <label for="faceS">S</label>
           </div>
+          <span class = "sepaSpan"></span>
+          <span class = "midHintSpan">Max act</span>
+          <input class = "numInput" name = "maxAct" type = "number" value = "4" min = "0">
+        </div>
+      </div><br>
+       <div class = "ioDiv">
+        <span class = "hintSpan">Target state</span>
+        <span class = "sepaSpan"></span>
+        <div class = "inputDiv">
+          <span class = "smallHintSpan">Row</span>
+          <input class = "numInput" name = "targetRow" type = "number" value = "3" min = "1" max = "8">
+          <span class = "smallHintSpan">Col</span>
+          <input class = "numInput" name = "targetCol" type = "number" value = "4" min = "1" max = "8">
+          <span class = "smallHintSpan">Face</span>
+          <span class = "sepaSpan"></span>
+          <div class = "faceDiv">
+            <input type="radio" id="tFaceW" name="tFace" class = "faceRadio" value = "W">
+            <label for="tFaceW">W</label>
+            <input type="radio" id="tFaceE" name="tFace" class = "faceRadio" value = "E">
+            <label for="tFaceE">E</label>
+            <input type="radio" id="tFaceN" name="tFace" class = "faceRadio" value = "N">
+            <label for="tFaceN">N</label>
+            <input type="radio" id="tFaceS" name="tFace" class = "faceRadio" value = "S" checked>
+            <label for="tFaceS">S</label>
+          </div>
         </div>
       </div><br>
       <div class = "ioDiv">
-        <span class = "hintSpan">Input key sequence, comma separate</span>
+        <span class = "hintSpan">Possible solutions</span>
         <span class = "sepaSpan"></span>
-        <input id = "keySeq" class = "keyInput" type = "text">
+        <select id = "opSeq" class = "opOutput">
+        </select>
         <input id = "goButton" class = "finButton" type = "button" value = "Go">
       </div><br>
       <div class = "backDiv">
