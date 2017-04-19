@@ -1,4 +1,4 @@
-Direction for use:
+#Direction for use:
 
 Open the index.html in chrome. You can see a grid board. You can press 'R', 'L' or space to move the robot. You can also choose one of the modes, which correspond to different tasks.
 
@@ -6,7 +6,9 @@ For the first mode, you can set the start position, face direction and a sequenc
 
 For the second mode, you can set the start position, start face direction, target position, target face direction and maximum actions. When you press 'GO', a sequence of action sequences will be generated. You can choose one action sequence to move the robot to the target state. 
  
-Implement Details:
+Click here for a [demo](index.html)
+ 
+#Implement Details:
 
 For the convenience of calculation, the direction is associated with its own vectors :
 
@@ -50,7 +52,7 @@ x' and y' represent the position that can reach position[x, y] with 'M' action a
 
 Second, we generate the sequence of action sequence with back tracking. 
 
-Assume the target state is xt, yt, ft and the maximum action is N. We need to check all dp[j][ft][xt][yt] for 1 <= j <= N which correspond to all possible solutions with different number of actions. To generate the sequence, we keep searching for the previous possible actions according to the DP recursive rules until we reach the basis which mean j is equal to 0. So we follow a path in the recursive tree, and we always pick the node with value of true, and that guarentees we will reach the initial state finally and we do not traverse a path twice. So the time complexity is the number of possible solutions.
+Assume the target state is xt, yt, ft and the maximum action is N. We need to check all dp[j][ft][xt][yt] for 1 <= j <= N which correspond to all possible solutions with different number of actions. To generate the sequence, we keep searching for the previous possible actions according to the DP recursive rules until we reach the basis which mean j is equal to 0. So we follow a path in the recursive tree, and we always pick the node with value of true, and that guarentees we will reach the initial state finally and we do not traverse a path twice. So the time complexity of this step is the number of possible solutions.
 
 
 
