@@ -4,29 +4,21 @@ Open the index.html in chrome. You can see a grid board. You can press 'R', 'L' 
 
 For the first mode, you can set the start position, face direction and a sequence of actions. When you press 'Go', the robot will move as the actions indicating.
 
-For the second mode, you can set the start position, start face direction, target position, target face direction and maximum actions. When you press 'GO', a sequence of action sequences will be generated. You can choose one action sequence to move the robot to the target state. 
- 
-Click here for a [demo](https://cdn.rawgit.com/yurun00/RobotGrids/573b43fc/index.html)
+For the second mode, you can set the start position, start face direction, target position, target face direction and maximum actions. When you press 'GO', a sequence of action sequences will be generated. You can choose one action sequence to move the robot to the target state.
  
 #Implement Details:
 
 For the convenience of calculation, the direction is associated with its own vectors :
 
 ----------> X
-|                W
-|              [0,-1]
-|         _ _ _ _ _ _ _ _
-|        |_|_|_|_|_|_|_|_|
-|        |_|_|_|_|_|_|_|_|
-|        |_|_|_|_|_|_|_|_|
-|    S   |_|_|_|_|_|_|_|_|   N
-| [-1,0] |_|_|_|_|_|_|_|_| [1,0]
-|        |_|_|_|_|_|_|_|_|
-|        |_|_|_|_|_|_|_|_|
-/        |_|_|_|_|_|_|_|_|
-Y                
-                 E
-			   [0,1]
+|           W
+|         [0,-1]
+|   S               N
+|[-1,0]   board   [1,0]
+|
+|           E
+/         [0,1]
+Y
 
 When we move forward the robot, assuming the direction vector is [p, q], then the next position of the robot would be [x+p, y+q].
 
