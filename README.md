@@ -9,7 +9,7 @@ For the second mode, you can set the start position, start face direction, targe
 #Implement Details:
 
 For the convenience of calculation, the direction is associated with its own vectors :
-
+'''
 ----------> X
 |           W
 |         [0,-1]
@@ -19,7 +19,7 @@ For the convenience of calculation, the direction is associated with its own vec
 |           E
 /         [0,1]
 Y
-
+'''
 When we move forward the robot, assuming the direction vector is [p, q], then the next position of the robot would be [x+p, y+q].
 
 In order to map the direction vector back to the charactor of "WSEN", arr2ch is defined and the charactor is calculated in this way:
