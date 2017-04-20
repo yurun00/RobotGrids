@@ -14,6 +14,7 @@ var arr2ch = {0: 'W', 1: 'S', 4: 'E', 3: 'N'};
 var startRow = 0;
 var startCol = 0;
 var startF = "";
+var paths = [];
 
 // Robot object
 function robot() {
@@ -124,6 +125,7 @@ function calcPath(x0, y0, f0, x1, y1, f1, n) {
   y0 -= 1;
   x1 -= 1;
   y1 -= 1;
+  // Dynamic programming, explanation in README
   var dp = new Array(n+1);
   for (var i = 0; i < n+1; i++) {
     dp[i] = new Array(4);
@@ -137,6 +139,7 @@ function calcPath(x0, y0, f0, x1, y1, f1, n) {
       }
     }
   }
+  // Possible reaching state for each number of actions
   dp[0][f0][x0][y0] = true;
   for (var i = 1; i < n+1; i++) {
     for (var f = 0; f < 4; f++) {
@@ -152,30 +155,31 @@ function calcPath(x0, y0, f0, x1, y1, f1, n) {
       }
     }
   }
+  // Back tracking
   var res = [];
   if (x0 == x1 && y0 == y1 && f0 == f1)
     res.push("");
   for (var i = 1; i < n+1; i++) {
     var cur = "";
-    dfs(res, dp, x1, y1, f1, i, cur);
+    bt(res, dp, x1, y1, f1, i, cur);
   }
   return res;
 }
 
-function dfs(res, dp, x, y, f, n, cur) {
+function bt(res, dp, x, y, f, n, cur) {
   if (n == 0) {
       res.push(cur);
       return;
   }
   
   if (dp[n-1][(f+3)%4][x][y])
-      dfs(res, dp, x, y, (f+3)%4, n-1, 'L'+cur);
+      bt(res, dp, x, y, (f+3)%4, n-1, 'L'+cur);
   if (dp[n-1][(f+1)%4][x][y])
-      dfs(res, dp, x, y, (f+1)%4, n-1, 'R'+cur);
+      bt(res, dp, x, y, (f+1)%4, n-1, 'R'+cur);
   var d1 = [x+1, x, x-1, x];
   var d2 = [y, y+1, y, y-1];
   if (d1[f] >= 0 && d1[f] <= 7 && d2[f] >= 0 && d2[f] <= 7 && dp[n - 1][f][d1[f]][d2[f]])
-      dfs(res, dp, d1[f], d2[f], f, n-1, 'M'+cur);
+      bt(res, dp, d1[f], d2[f], f, n-1, 'M'+cur);
 }
 
 
@@ -316,6 +320,16 @@ $(window).on('load', function() {
   // If press the 'Back' button, load chose model page
   document.getElementById("backButton").addEventListener('click', function () {
     window.location.href = "index.html";
+  });
+  
+  // If press the 'Save' button, save solution to the file
+  document.getElementById("saveButton").addEventListener('click', function () {
+    var newWindow = window.open();
+    for (p of paths) {
+      newWindow.document.write(p.split('').join(','))
+      newWindow.document.write('<br>');
+    }
+    newWindow.focus();
   });
 });
 

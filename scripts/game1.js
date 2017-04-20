@@ -179,8 +179,8 @@ $(window).on('load', function() {
     keySeq = document.getElementById("keySeq").value;
     keySeq = keySeq.split(',');
     // Get the start position
-    rbt.x = startRow;
-    rbt.y = startCol;
+    rbt.x = startCol;
+    rbt.y = startRow;
     // Get the face direction in one of ['W', 'E', 'N', 'S']
     rbt.direction = ch2arr[startF].slice();
     // Choose robot image of the face direction
