@@ -232,6 +232,11 @@ $(window).on('load', function() {
     // Get the start position
     startRow = parseInt(document.getElementsByName('startRow')[0].value);
     startCol = parseInt(document.getElementsByName('startCol')[0].value);
+    // The situation where the start position is out of range
+    if(startRow < 1 || startRow > 8 || startCol < 1 || startCol > 8) {
+      alert("Initial state invalid!");
+      return ;
+    }
     // Get the start face direction
     startF = "";
     for (var i = 0;i < 4;i++) {
@@ -241,15 +246,14 @@ $(window).on('load', function() {
     // Get the maximum actinos
     var maxAct = parseInt(document.getElementsByName('maxAct')[0].value);
     
-    // The situation where the start position is out of range
-    if(startRow < 1 || startRow > 8 || startCol < 1 || startCol > 8) {
-      alert("Initial state invalid!");
-      return ;
-    }
-    
     // Get target state information
     var targetRow = parseInt(document.getElementsByName('targetRow')[0].value);
     var targetCol = parseInt(document.getElementsByName('targetCol')[0].value);
+    // The situation where the start position is out of range
+    if(targetRow < 1 || targetRow > 8 || targetCol < 1 || targetCol > 8) {
+      alert("Target state invalid!");
+      return ;
+    }
     // Get the start face direction
     var targetF = "";
     for (var i = 0;i < 4;i++) {

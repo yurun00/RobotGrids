@@ -178,6 +178,13 @@ $(window).on('load', function() {
     // Get the key sequence
     keySeq = document.getElementById("keySeq").value;
     keySeq = keySeq.split(',');
+    // Check if it is a valid path
+    for (act of keySeq) {
+      if (act.toUpperCase() != 'M' && act.toUpperCase() != 'L' && act.toUpperCase() != 'R') {
+        alert('Input actions invalid!');
+        return;
+      }
+    }
     // Get the start position
     rbt.x = startCol;
     rbt.y = startRow;
